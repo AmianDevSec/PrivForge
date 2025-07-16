@@ -1,14 +1,13 @@
-## Support
+<p align="center">
+  <img src="pf_icon.jpg" alt="PrivForge Icon" width="100%" height='auto' />
+</p>
+
 <p align="center">
   <a href="https://ko-fi.com/amiandevsec" target="_blank" rel="noopener">
     <img src="https://cdn.ko-fi.com/cdn/kofi3.png?v=3" alt="Buy Me a Coffee at Ko-fi" style="height: 45px;" />
   </a>
   <br />
   <em>If you find PrivForge useful, consider supporting development with a coffee ☕️</em>
-</p>
-
-<p align="center">
-  <img src="pf_icon.jpg" alt="PrivForge Icon" width="100%" height='auto' />
 </p>
 
 # PrivForge (pf) 🛠️
