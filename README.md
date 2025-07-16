@@ -1,9 +1,7 @@
-    ____       _       ______                    
-   / __ \_____(_)   __/ ____/___  _________ ____ 
-  / /_/ / ___/ / | / / /_  / __ \/ ___/ __ `/ _ \
- / ____/ /  / /| |/ / __/ / /_/ / /  / /_/ /  __/
-/_/   /_/  /_/ |___/_/    \____/_/   \__, /\___/ 
-                                    /____/       
+<p align="center">
+  <img src="pf_icon.jpg" alt="PrivForge Icon" width="100%" height='auto' />
+</p>
+  
 # PrivForge (pf) 🛠️
 
 **PrivForge** is a modular **Linux Privilege Escalation Toolkit** written in Python, designed to assist security professionals and penetration testers in identifying and exploiting local privilege escalation vectors.
