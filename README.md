@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="pf_icon.jpg" alt="PrivForge Icon" width="100%" height='auto' />
+  <img src="pf_icon.png" alt="PrivForge Icon" width="100%" height='auto' />
 </p>
 
 <p align="center">
