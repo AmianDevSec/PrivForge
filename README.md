@@ -1,8 +1,18 @@
 <p align="center">
   <img src="pf_icon.jpg" alt="PrivForge Icon" width="100%" height='auto' />
 </p>
-  
+
+<p align="center">
+  <a href="https://ko-fi.com/amiandevsec" target="_blank" rel="noopener">
+    <img src="https://cdn.ko-fi.com/cdn/kofi3.png?v=3" alt="Buy Me a Coffee at Ko-fi" style="height: 45px;" />
+  </a>
+  <br />
+  <em>If you find PrivForge useful, consider supporting development with a coffee ☕️</em>
+</p>
+
 # PrivForge (pf) 🛠️
+
+[![GitHub Release](https://img.shields.io/github/v/release/AmianDevSec/PrivForge)](https://github.com/AmianDevSec/PrivForge/releases/latest)
 
 **PrivForge** is a modular **Linux Privilege Escalation Toolkit** written in Python, designed to assist security professionals and penetration testers in identifying and exploiting local privilege escalation vectors.
 
