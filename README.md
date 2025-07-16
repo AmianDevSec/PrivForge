@@ -54,3 +54,19 @@ git clone https://github.com/AmianDevSec/PrivForge.git
 cd PrivForge
 pip install -r requirements.txt
 ```
+
+### 🛡️ Disclaimer
+
+>This tool is intended for educational and authorized security testing purposes only. Unauthorized use of this software to compromise systems you do not own is illegal.
+
+### 🙌 Contribution
+
+Feel free to open issues or submit pull requests on the [GitHub repository](https://github.com/AmianDevSec/Lgpt). Contributions and feedback are welcome!
+
+---
+
+### 📃 License
+
+This project is licensed under the GPLv3 License. See the [LICENSE](LICENSE) file for details.
+
+---
