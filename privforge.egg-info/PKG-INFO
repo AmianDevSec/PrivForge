@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: privforge
+Version: 1.2.1
+Summary: Linux Privilege Escalation Toolkit
+Author: AmianDevSec
+Author-email: amiandevsec@gmail.com
+License: GPL-3.0
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: POSIX :: Linux
+License-File: LICENSE
+Requires-Dist: rich>=13.0.0
+Requires-Dist: pyfiglet
+Requires-Dist: psutil
+Requires-Dist: pyyaml
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: summary
