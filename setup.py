@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='privforge',
-    version='1.2.2',
+    version='1.2.3',
     description='Linux Privilege Escalation Toolkit',
     author='AmianDevSec',
     author_email='amiandevsec@gmail.com',
